@@ -8,26 +8,34 @@ html(lang='en')
     script(src="https://code.jquery.com/jquery-3.5.1.slim.min.js", integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj", crossorigin="anonymous")
     script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js", integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV", crossorigin="anonymous")
     link(rel='stylesheet', href='/stylesheets/style.css')
-  body
-    div(class='container-fluid')
-      div(class='row')
-        div(class='col-sm-2')
-          block sidebar
-            ul(class='sidebar-nav')
-              li 
-                a(href='/index') Home
-              li 
-                a(href='/order') Order here
-              li 
-                a(href='/about') Info scouts
-              li 
-                a(href='/pastainfo') Pasta Info
-              li 
-                hr
-              li 
-                a(href='/catalog/order/create') Make Order
-             
-            
-                
-        div(class='col-sm-10')
-          block content
+ 
+          
+nav.navbar.navbar-expand-lg.navbar-light.bg-light
+  a.navbar-brand(href='#' tabindex='-1' aria-disabled='true') Pasta actie
+  button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarSupportedContent' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation')
+    span.navbar-toggler-icon
+  #navbarSupportedContent.collapse.navbar-collapse
+    ul.navbar-nav.mr-auto
+      li.nav-item.active
+        a.nav-link(href='/index')
+          | Home 
+          span.sr-only (current)
+      li.nav-item
+        a.nav-link(href='/pastainfo') 
+          |Pasta Info
+          span.sr-only (current)
+      li.nav-item
+        a.nav-link(href='/order') Order
+      li.nav-item
+        a.nav-link(href='/about') Over
+          span.sr-only (current)
+    form.form-inline.my-2.my-lg-0
+
+
+footer.page-footer.font-small.blue
+  .footer-copyright.text-center.py-3
+    | &copy; 2020 Copyright:
+    a(href='mailto:toon.keymeulen@hotmail.com')  Toon Keymeulen
+    |  and
+    a(href='mailto:emile.combes@student.kuleuven.be')  Emile Combes
+      block content
