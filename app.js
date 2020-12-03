@@ -2,32 +2,52 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 
-// Set mongodb link
-const mongoDB =
-  'mongodb+srv://pasta123:pasta123@pastapacket.pz52b.mongodb.net/pasta_app?retryWrites=true&w=majority';
+// Set port number
+const port = 3000;
 
-// import the route modules
-const routes = require('./routes');
+// Set mongodb link
 
 // Init app
 const app = express();
 
-const port = 3000;
+// Bring in Models
+const Packet = require('./models/packet');
 
 // Load view engine
-app.set('views', path.join(__dirname, './views'));
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-// Serve all static files in /public directory
-app.use(express.static(path.join(__dirname, 'public')));
+// Serve all static files in public directory
+// app.use(express.static(path.join(__dirname, 'public')));
 
-// Set routes (default to index)
-app.use('/', routes());
+// Home route
+app.get('/', function (req, res) {
+  let packets = [
+    {
+      id: 1,
+      title: 't1',
+      price: '5eur',
+      description: 'testinggg',
+    },
+    {
+      id: 2,
+      title: 't2',
+      price: '5eur',
+      description: 'testinggg',
+    },
+    {
+      id: 3,
+      title: 't3',
+      price: '5e100eurur',
+      description: 'jfasd;fhas',
+    },
+  ];
+});
 
-// Load database
-mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+// Route Files
+// const packets = require('./routes/packets');
+
+// app.use('/packets', packets);
 
 // Start server
 app.listen(port, () => {
