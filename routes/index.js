@@ -1,9 +1,19 @@
-var express = require('express');
-var router = express.Router();
-/*These files contain code fo rhandling particular sets of related routes.*/
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Piemels' });
-});
+const express = require('express');
 
-module.exports = router;
+const aboutRoute = require('./about');
+const orderRoute = require('./order');
+const pastainfoRoute = require('./pastainfo');
+
+const router = express.Router();
+
+module.exports = () => {
+  router.get('/', (request, response) => {
+    response.render('views/index', { pageTitle: 'Welcome' });
+  });
+
+  router.use('/about', aboutRoute());
+  router.use('/order', orderRoute());
+  router.use('/pastainfo', pastainfoRoute());
+
+  return router;
+};
