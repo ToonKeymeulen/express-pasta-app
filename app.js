@@ -35,14 +35,14 @@ const Packet = require('./models/packet');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-// Serve all static files in public directory
-// app.use(express.static(path.join(__dirname, 'public')));
-
 // Body Parser Middleware
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
+
+// Set Public Folder
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Home route
 app.get('/', function (req, res) {
@@ -55,6 +55,15 @@ app.get('/', function (req, res) {
         packets: packs,
       });
     }
+  });
+});
+
+// Get Single Packet
+app.get('/packet/:id', function (req, res) {
+  Packet.findById(req.params.id, function (err, packet) {
+    res.render('packet', {
+      packet: packet,
+    });
   });
 });
 

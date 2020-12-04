@@ -1,6 +1,7 @@
 # Assessment_InternetApp
 
 (--save flag saves module in package.json dependencies)
+(-g flag saves the module globally - use sudo)
 
 used node packages:
 npm install express
@@ -11,3 +12,5 @@ npm install -D nodemon
 npm install pug-cli -g
 npm install mongoose
 npm install body-parser
+npm install -g bower (front end package manager)
+bower install bootstrap

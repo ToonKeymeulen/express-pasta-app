@@ -2,6 +2,7 @@ extends layout
 
 block content
   h1 #{title}
-  ul
+  ul.list-group
     each packet, i in packets
-      li= packet.title
+      li.list-group-item
+        a(href = "/packet/" + packet._id)= packet.title
