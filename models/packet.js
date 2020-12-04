@@ -1,7 +1,7 @@
-let mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
 // Packet Schema
-let packetSchema = mongoose.Schema({
+const packetSchema = mongoose.Schema({
   title: {
     type: String,
     required: true,
