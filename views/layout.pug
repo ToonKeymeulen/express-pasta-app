@@ -1,41 +1,31 @@
 doctype html
-html(lang='en')
+html
   head
-    title= title
-    meta(charset='utf-8')
-    meta(name='viewport', content='width=device-width, initial-scale=1')
-    link(rel="stylesheet", href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css", integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z", crossorigin="anonymous")
-    script(src="https://code.jquery.com/jquery-3.5.1.slim.min.js", integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj", crossorigin="anonymous")
-    script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js", integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV", crossorigin="anonymous")
-    link(rel='stylesheet', href='/stylesheets/style.css')
- 
-          
-nav.navbar.navbar-expand-lg.navbar-light.bg-light
-  a.navbar-brand(href='#' tabindex='-1' aria-disabled='true') Pasta actie
-  button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarSupportedContent' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation')
-    span.navbar-toggler-icon
-  #navbarSupportedContent.collapse.navbar-collapse
-    ul.navbar-nav.mr-auto
-      li.nav-item.active
-        a.nav-link(href='/index')
-          | Home 
-          span.sr-only (current)
-      li.nav-item
-        a.nav-link(href='/pastainfo') 
-          |Pasta Info
-          span.sr-only (current)
-      li.nav-item
-        a.nav-link(href='/order') Order
-      li.nav-item
-        a.nav-link(href='/about') Over
-          span.sr-only (current)
-    form.form-inline.my-2.my-lg-0
-
-
-footer.page-footer.font-small.blue
-  .footer-copyright.text-center.py-3
-    | &copy; 2020 Copyright:
-    a(href='mailto:toon.keymeulen@hotmail.com')  Toon Keymeulen
-    |  and
-    a(href='mailto:emile.combes@student.kuleuven.be')  Emile Combes
+    title PastaPakket
+    link(rel='stylesheet' href='/bower_components/bootstrap/dist/css/bootstrap.css')
+    link(rel='stylesheet' href='/css/style.css')
+  body
+    nav.navbar.navbar-inverse
+      .container
+        .navbar-header
+          button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#navbar', aria-expanded='false', aria-controls='navbar')
+            span.sr-only Toggle navigation
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a.navbar-brand(href='/') PastaPakket
+        #navbar.collapse.navbar-collapse
+          ul.nav.navbar-nav
+            li
+              a(href='/') Home
+            li
+              a(href='/packets/add') Add Packets
+    .container
       block content
+      br
+      hr
+      footer
+        p Toon Keymeulen, Emile Combes - Copyright &copy; 2020
+    script(src='/bower_components/jquery/dist/jquery.js')  
+    script(src='/bower_components/bootstrap/dist/js/bootstrap.js')
+    script(src='/js/main.js')  

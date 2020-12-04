@@ -1,59 +1,96 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-//import the route modules 
-var indexRouter = require('./routes/index');
-var orderRouter = require('./routes/order');
-var pastainfoRouter = require('./routes/pastainfo');
-var aboutRouter = require('./routes/about');
-//var catalogRouter = require('./routes/catalog');  //Import routes for "catalog" area of site
-//create app
-var app = express();
+const express = require('express');
+const path = require('path');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 
-//Set up mongoose connection
-var mongoose = require('mongoose');
-var mongoDB = 'mongodb+srv://pasta123:pasta123@pastapacket.pz52b.mongodb.net/pasta_app?retryWrites=true&w=majority';
-mongoose.connect(mongoDB, { useNewUrlParser: true , useUnifiedTopology: true});
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+// Set port number
+const port = 3000;
 
-// view engine setup, first select the correct folder for the views
+// Set mongodb link
+const mongoDB =
+  'mongodb+srv://emile:pasta123@pastapacket.pz52b.mongodb.net/PastaPacket?retryWrites=true&w=majority';
+
+// Load database
+mongoose.connect(mongoDB);
+// mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
+const db = mongoose.connection;
+
+// Check connection
+db.once('open', function () {
+  console.log('Connected to mongoDB.');
+});
+
+// Check db errors
+db.on('error', function (err) {
+  console.log(err);
+});
+
+// Init app
+const app = express();
+
+// Bring in Models
+const Packet = require('./models/packet');
+
+// Load view engine
 app.set('views', path.join(__dirname, 'views'));
-//then set the view engine to pug
 app.set('view engine', 'pug');
 
+// Body Parser Middleware
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
+// parse application/json
+app.use(bodyParser.json());
 
-//add middleware libraries into request handling chain
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-//static to serve all sttic files in /public directory, zijnde images stylesheets en javascripts
+// Set Public Folder
 app.use(express.static(path.join(__dirname, 'public')));
 
-//the earlier imported code from index.js and users.js will now be added to the request handling chain
-app.use('/', indexRouter);
-app.use('/order', orderRouter);
-app.use('/about', aboutRouter);
-app.use('/pastainfo', pastainfoRouter);
-//app.use('/catalog' ,catalogRouter);
-
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
+// Home route
+app.get('/', function (req, res) {
+  Packet.find({}, function (err, packs) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.render('index', {
+        title: 'Packets',
+        packets: packs,
+      });
+    }
+  });
 });
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+// Get Single Packet
+app.get('/packet/:id', function (req, res) {
+  Packet.findById(req.params.id, function (err, packet) {
+    res.render('packet', {
+      packet: packet,
+    });
+  });
 });
-//exports the app object
-module.exports = app;
+
+// Add Route
+app.get('/packets/add', function (req, res) {
+  res.render('add_packet', {
+    title: 'Add Packet',
+  });
+});
+
+// Add Submit POST route
+app.post('/packets/add', function (req, res) {
+  const packet = new Packet();
+  packet.title = req.body.title;
+  packet.price = req.body.price;
+  packet.description = req.body.description;
+
+  packet.save(function (err) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.redirect('/');
+    }
+  });
+});
+
+// Start server
+app.listen(port, function () {
+  console.log(`Express server listening on port ${port}!`);
+});
