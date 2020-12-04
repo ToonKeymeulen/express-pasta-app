@@ -1,13 +1,13 @@
 const mongoose = require('mongoose');
 
-// Packet Schema
-const packetSchema = mongoose.Schema({
+// Event Schema
+const eventSchema = mongoose.Schema({
   title: {
     type: String,
     required: true,
   },
-  price: {
-    type: String,
+  date: {
+    type: Date,
     required: true,
   },
   description: {
@@ -16,4 +16,4 @@ const packetSchema = mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('Packet', packetSchema);
+module.exports = mongoose.model('Event', eventSchema);

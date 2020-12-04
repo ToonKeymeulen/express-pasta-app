@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 
 // Set port number
 const port = 3000;
@@ -28,7 +29,7 @@ db.on('error', function (err) {
 const app = express();
 
 // Bring in Models
-let Packet = require('./models/packet');
+const Packet = require('./models/packet');
 
 // Load view engine
 app.set('views', path.join(__dirname, 'views'));
@@ -37,16 +38,45 @@ app.set('view engine', 'pug');
 // Serve all static files in public directory
 // app.use(express.static(path.join(__dirname, 'public')));
 
+// Body Parser Middleware
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
+// parse application/json
+app.use(bodyParser.json());
+
 // Home route
 app.get('/', function (req, res) {
-  Packet.find({}, function (err, packets) {
+  Packet.find({}, function (err, packs) {
     if (err) {
       console.log(err);
     } else {
       res.render('index', {
         title: 'Packets',
-        packets: packets,
+        packets: packs,
       });
+    }
+  });
+});
+
+// Add Route
+app.get('/packets/add', function (req, res) {
+  res.render('add_packet', {
+    title: 'Add Packet',
+  });
+});
+
+// Add Submit POST route
+app.post('/packets/add', function (req, res) {
+  const packet = new Packet();
+  packet.title = req.body.title;
+  packet.price = req.body.price;
+  packet.description = req.body.description;
+
+  packet.save(function (err) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.redirect('/');
     }
   });
 });
