@@ -2,6 +2,8 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const flash = require('connect-flash');
+const session = require('express-session');
 
 // Set port number
 const port = 3000;
@@ -44,6 +46,23 @@ app.use(bodyParser.json());
 // Set Public Folder
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Express Session Middleware
+app.use(
+  session({
+    secret: 'keyboard cat',
+    resave: true,
+    saveUninitialized: true,
+  })
+);
+
+// Express Messages Middleware
+app.use(flash());
+
+app.use(function (req, res, next) {
+  res.locals.messages = require('express-messages')(req, res);
+  next();
+});
+
 // Home route
 app.get('/', function (req, res) {
   Packet.find({}, function (err, packs) {
@@ -60,9 +79,9 @@ app.get('/', function (req, res) {
 
 // Get Single Packet
 app.get('/packet/:id', function (req, res) {
-  Packet.findById(req.params.id, function (err, packet) {
+  Packet.findById(req.params.id, function (err, p) {
     res.render('packet', {
-      packet: packet,
+      packet: p,
     });
   });
 });
@@ -85,8 +104,49 @@ app.post('/packets/add', function (req, res) {
     if (err) {
       console.log(err);
     } else {
+      req.flash('success', 'Packet Added');
       res.redirect('/');
     }
+  });
+});
+
+// Load Edit Form
+app.get('/packet/edit/:id', function (req, res) {
+  Packet.findById(req.params.id, function (err, p) {
+    res.render('edit_packet', {
+      title: 'Edit Packet',
+      packet: p,
+    });
+  });
+});
+
+// Update Submit POST route
+app.post('/packets/edit/:id', function (req, res) {
+  const packet = {};
+  packet.title = req.body.title;
+  packet.price = req.body.price;
+  packet.description = req.body.description;
+
+  const query = { _id: req.params.id };
+
+  Packet.updateOne(query, packet, function (err) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.redirect('/');
+    }
+  });
+});
+
+// Delete Packet
+app.delete('/packet/:id', function (req, res) {
+  const query = { _id: req.params.id };
+
+  Packet.remove(query, function (err) {
+    if (err) {
+      console.log(err);
+    }
+    res.send('Success');
   });
 });
 

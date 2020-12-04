@@ -14,3 +14,4 @@ npm install mongoose
 npm install body-parser
 npm install -g bower (front end package manager)
 bower install bootstrap
+npm install --save express-messages express-session connect-flash express-validator

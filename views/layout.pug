@@ -21,6 +21,7 @@ html
             li
               a(href='/packets/add') Add Packets
     .container
+      != messages('message', locals)
       block content
       br
       hr
