@@ -6,12 +6,29 @@ const mongoose = require('mongoose');
 const port = 3000;
 
 // Set mongodb link
+const mongoDB =
+  'mongodb+srv://emile:pasta123@pastapacket.pz52b.mongodb.net/PastaPacket?retryWrites=true&w=majority';
+
+// Load database
+mongoose.connect(mongoDB);
+// mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
+const db = mongoose.connection;
+
+// Check connection
+db.once('open', function () {
+  console.log('Connected to mongoDB.');
+});
+
+// Check db errors
+db.on('error', function (err) {
+  console.log(err);
+});
 
 // Init app
 const app = express();
 
 // Bring in Models
-const Packet = require('./models/packet');
+let Packet = require('./models/packet');
 
 // Load view engine
 app.set('views', path.join(__dirname, 'views'));
@@ -22,34 +39,19 @@ app.set('view engine', 'pug');
 
 // Home route
 app.get('/', function (req, res) {
-  let packets = [
-    {
-      id: 1,
-      title: 't1',
-      price: '5eur',
-      description: 'testinggg',
-    },
-    {
-      id: 2,
-      title: 't2',
-      price: '5eur',
-      description: 'testinggg',
-    },
-    {
-      id: 3,
-      title: 't3',
-      price: '5e100eurur',
-      description: 'jfasd;fhas',
-    },
-  ];
+  Packet.find({}, function (err, packets) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.render('index', {
+        title: 'Packets',
+        packets: packets,
+      });
+    }
+  });
 });
 
-// Route Files
-// const packets = require('./routes/packets');
-
-// app.use('/packets', packets);
-
 // Start server
-app.listen(port, () => {
+app.listen(port, function () {
   console.log(`Express server listening on port ${port}!`);
 });
