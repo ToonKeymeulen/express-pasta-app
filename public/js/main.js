@@ -4,7 +4,7 @@ $(document).ready(function () {
     const id = $target.attr('data-id');
     $.ajax({
       type: 'DELETE',
-      url: `/packet/${id}`,
+      url: `/packets/${id}`,
       success: function (reponse) {
         alert('Deleting Packet');
         window.location.href = '/';
