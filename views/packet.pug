@@ -4,3 +4,6 @@ block content
     h1= packet.title
     h5 Prijs: #{packet.price}
     p= packet.description
+    hr
+    a.btn.btn-default(href = '/packets/edit/' + packet._id) Edit
+    a.btn.btn-danger.delete-article(href = '#', data-id = packet._id) Delete

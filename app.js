@@ -2,6 +2,9 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const expressValidator = require('express-validator');
+const flash = require('connect-flash');
+const session = require('express-session');
 
 // Set port number
 const port = 3000;
@@ -11,7 +14,7 @@ const mongoDB =
   'mongodb+srv://emile:pasta123@pastapacket.pz52b.mongodb.net/PastaPacket?retryWrites=true&w=majority';
 
 // Load database
-mongoose.connect(mongoDB);
+mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 // mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 
@@ -30,6 +33,7 @@ const app = express();
 
 // Bring in Models
 const Packet = require('./models/packet');
+const Event = require('./models/event');
 
 // Load view engine
 app.set('views', path.join(__dirname, 'views'));
@@ -44,51 +48,61 @@ app.use(bodyParser.json());
 // Set Public Folder
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Express Session Middleware
+app.use(
+  session({
+    secret: 'keyboard cat',
+    resave: true,
+    saveUninitialized: true,
+  })
+);
+
+// Express Messages Middleware
+app.use(flash());
+
+app.use(function (req, res, next) {
+  res.locals.messages = require('express-messages')(req, res);
+  next();
+});
+
+// Express Validator Middleware
+app.use(
+  expressValidator({
+    errorFormatter: function (param, msg, value) {
+      var namespace = param.split('.'),
+        root = namespace.shift(),
+        formParam = root;
+
+      while (namespace.length) {
+        formParam += '[' + namespace.shift() + ']';
+      }
+      return {
+        param: formParam,
+        msg: msg,
+        value: value,
+      };
+    },
+  })
+);
+
 // Home route
 app.get('/', function (req, res) {
-  Packet.find({}, function (err, packs) {
+  Event.find({}, function (err, evs) {
     if (err) {
       console.log(err);
     } else {
       res.render('index', {
-        title: 'Packets',
-        packets: packs,
+        title: 'Steun ons door massaal pasta te eten :)',
+        events: evs,
       });
     }
   });
 });
 
-// Get Single Packet
-app.get('/packet/:id', function (req, res) {
-  Packet.findById(req.params.id, function (err, packet) {
-    res.render('packet', {
-      packet: packet,
-    });
-  });
-});
+// Route Files
+const packets = require('./routes/packets');
 
-// Add Route
-app.get('/packets/add', function (req, res) {
-  res.render('add_packet', {
-    title: 'Add Packet',
-  });
-});
-
-// Add Submit POST route
-app.post('/packets/add', function (req, res) {
-  const packet = new Packet();
-  packet.title = req.body.title;
-  packet.price = req.body.price;
-  packet.description = req.body.description;
-
-  packet.save(function (err) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.redirect('/');
-    }
-  });
-});
+app.use('/packets', packets);
 
 // Start server
 app.listen(port, function () {

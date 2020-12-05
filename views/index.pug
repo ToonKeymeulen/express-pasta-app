@@ -2,7 +2,9 @@ extends layout
 
 block content
   h1 #{title}
+  p In onze scouts vinden we spaghetti enzo heel lekker, steun ons door mee te eten. Dit zijn nog een paar leuke evenementen die we graag hebben gedaan. Luister mee naar onze muziek op spotify
   ul.list-group
-    each packet, i in packets
+    each event, i in events
       li.list-group-item
-        a(href = "/packet/" + packet._id)= packet.title
+        h3= event.title
+        p= event.description
