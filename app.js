@@ -86,19 +86,11 @@ app.use(
   })
 );
 
+// eslint-disable-next-line camelcase
+const event_controller = require('./controllers/eventController');
+
 // Home route
-app.get('/', function (req, res) {
-  Event.find({}, function (err, evs) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.render('index', {
-        title: 'Steun ons door massaal pasta te eten :)',
-        events: evs,
-      });
-    }
-  });
-});
+app.get('/', event_controller.get_all_events);
 
 // Route Files
 const packets = require('./routes/packets');
