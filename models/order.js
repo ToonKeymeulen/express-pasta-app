@@ -15,7 +15,7 @@ const orderSchema = mongoose.Schema({
     required: true,
   },
   count: {
-    type: String,
+    type: Number,
     required: true,
   },
   packet: {
