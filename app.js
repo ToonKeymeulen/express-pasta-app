@@ -87,22 +87,28 @@ app.use(
 
 // Home route
 app.get('/', function (req, res) {
-  Event.find({}, function (err, evs) {
+  Event.findOne({ title: 'Online Kerstspel' }, function (err, ev) {
     if (err) {
       console.log(err);
     } else {
       res.render('index', {
-        title: 'Steun ons door massaal pasta te eten :)',
-        events: evs,
+        title: 'Pasta-actie van Scouts Hubertus',
+        event: ev,
       });
     }
   });
 });
 
+app.get('/about', function (req, res) {
+  res.render('about');
+});
+
 // Route Files
 const packets = require('./routes/packets');
+const events = require('./routes/events');
 
 app.use('/packets', packets);
+app.use('/events', events);
 
 // Start server
 app.listen(port, function () {
