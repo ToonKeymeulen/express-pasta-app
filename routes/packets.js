@@ -4,6 +4,7 @@ const router = express.Router();
 
 // Bring in Model
 const Packet = require('../models/packet');
+const Order = require('../models/order');
 
 // Main Route
 router.get('/', function (req, res) {
@@ -23,6 +24,16 @@ router.get('/', function (req, res) {
 router.get('/add', function (req, res) {
   res.render('add_packet', {
     title: 'Add Packet',
+  });
+});
+
+// Load order From
+router.get('/order/:id', function (req, res) {
+  Packet.findById(req.params.id, function (err, p) {
+    res.render('order_packet', {
+      title: 'Order Packet',
+      packet: p,
+    });
   });
 });
 
@@ -83,6 +94,7 @@ router.post('/edit/:id', function (req, res) {
   packet.price = req.body.price;
   packet.description = req.body.description;
 
+
   const query = { _id: req.params.id };
 
   Packet.updateOne(query, packet, function (err) {
@@ -106,5 +118,11 @@ router.delete('/:id', function (req, res) {
     res.send('Success');
   });
 });
+
+
+
+
+
+
 
 module.exports = router;

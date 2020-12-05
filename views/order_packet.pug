@@ -1,0 +1,35 @@
+extends layout
+
+block content
+    h1 #{title}
+    div.orderContainer
+        a(href = "/packets/" + packet._id)= packet.title
+        p= packet.description
+        p= packet.price
+
+    form(method = 'POST', action = '/order/' + packet._id)
+        #form-group
+            label Voornaam:
+            input.form-control(name = 'firstname', type = 'text')
+        #from-group
+            label Familienaam:
+            input.form-control(name = 'familyname', type = 'text')
+        #from-group
+            label Email:
+            input.form-control(name = 'email', type = 'text')
+        #from-group
+            label Aantal:
+            input.form-control(name = 'count', type = 'text')
+        br
+        input.btn.btn-primary(type = 'submit', value = 'Submit')
+
+
+
+    style(type="text/css").
+        .orderContainer {
+            border: 1px solid grey;
+            border-radius:15px;
+            padding:2%
+        }
+
+       

@@ -34,6 +34,7 @@ const app = express();
 // Bring in Models
 const Packet = require('./models/packet');
 const Event = require('./models/event');
+const Order = require('./models/order');
 
 // Load view engine
 app.set('views', path.join(__dirname, 'views'));
@@ -101,8 +102,13 @@ app.get('/', function (req, res) {
 
 // Route Files
 const packets = require('./routes/packets');
+const about = require('./routes/about');
+const order = require('./routes/order');
 
 app.use('/packets', packets);
+app.use('/about', about);
+app.use('/order', order);
+
 
 // Start server
 app.listen(port, function () {
