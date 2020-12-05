@@ -9,9 +9,10 @@ block content
         | Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don’t simply skip over it entirely.
       p
 
-  ul.list-group
-    each packet, i in packets
-      li.list-group-item
-        h3= packet.title
-        p= packet.description
-      p
+  .container
+    .row
+      each packet, i in packets
+        .col-lg-4.text-center
+          h3= packet.title
+          img.img-fluid(src= 'images/' + packet.title + '.jpg' alt= packet.title width='400')
+          p.lead.text-muted= packet.description

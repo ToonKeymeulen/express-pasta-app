@@ -4,13 +4,13 @@ block content
     h1 #{title}
     form(method = 'POST', action = '/packets/add')
         #form-group
-            label Title:
-            input.form-control(name = 'title', type = 'text')
+            label Gerecht:
+            input.form-control(name = 'Gerecht', type = 'text')
         #from-group
-            label Price:
-            input.form-control(name = 'price', type = 'text')
+            label Prijs:
+            input.form-control(name = 'Prijs', type = 'text')
         #from-group
-            label Description:
-            textarea.form-control(name = 'description')
+            label Beschrijving:
+            textarea.form-control(name = 'Beschrijving')
         br
         input.btn.btn-primary(type = 'submit', value = 'Submit')

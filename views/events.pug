@@ -9,10 +9,12 @@ block content
         | Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don’t simply skip over it entirely.
       p
 
-  ul.list-group
-    each event, i in events
-      li.list-group-item
-        h3= event.title
-        p= event.description
-        p.text-muted= event.date
-      br
+  .container
+    .row
+      each event, i in events
+        .col-lg-4.text-center
+          h3= event.title
+          img.img-fluid(src= 'images/' + event.title + '.jpg' alt= event.title width='400')
+          p.lead.text-muted= event.description
+          p.lead.text-muted= event.date
+          p= event.title
