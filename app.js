@@ -33,6 +33,7 @@ const app = express();
 
 // Bring in Models
 const Packet = require('./models/packet');
+const Event = require('./models/event');
 
 // Load view engine
 app.set('views', path.join(__dirname, 'views'));
@@ -86,13 +87,13 @@ app.use(
 
 // Home route
 app.get('/', function (req, res) {
-  Packet.find({}, function (err, packs) {
+  Event.find({}, function (err, evs) {
     if (err) {
       console.log(err);
     } else {
       res.render('index', {
-        title: 'Packets',
-        packets: packs,
+        title: 'Steun ons door massaal pasta te eten :)',
+        events: evs,
       });
     }
   });

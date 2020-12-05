@@ -5,6 +5,20 @@ const router = express.Router();
 // Bring in Model
 const Packet = require('../models/packet');
 
+// Main Route
+router.get('/', function (req, res) {
+  Packet.find({}, function (err, packs) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.render('packets', {
+        title: 'Packets',
+        packets: packs,
+      });
+    }
+  });
+});
+
 // Add Route
 router.get('/add', function (req, res) {
   res.render('add_packet', {
