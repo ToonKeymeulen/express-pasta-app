@@ -66,6 +66,7 @@ exports.display_order_menu = function (req, res) {
       packet.title = req.body.title;
       packet.price = req.body.price;
       packet.description = req.body.description;
+      packet.image_link = "standaard";
   
       packet.save(function (err) {
         if (err) {
