@@ -90,16 +90,31 @@ app.use(
 const event_controller = require('./controllers/eventController');
 
 // Home route
-app.get('/', event_controller.get_all_events);
+
+app.get('/', function (req, res) {
+  Event.findOne({ title: 'Online Kerstspel' }, function (err, ev) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.render('index', {
+        title: 'Pasta-actie van Scouts Hubertus',
+        event: ev,
+      });
+    }
+  });
+});
+
+app.get('/about', function (req, res) {
+  res.render('about');
+});
 
 // Route Files
 const packets = require('./routes/packets');
-const about = require('./routes/about');
-const order = require('./routes/order');
+
+const events = require('./routes/events');
 
 app.use('/packets', packets);
-app.use('/about', about);
-app.use('/order', order);
+app.use('/events', events);
 
 
 // Start server

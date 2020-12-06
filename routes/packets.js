@@ -23,7 +23,7 @@ router.get('/', function (req, res) {
 // Add Route
 router.get('/add', function (req, res) {
   res.render('add_packet', {
-    title: 'Add Packet',
+    title: 'Voeg uw pakket toe',
   });
 });
 
@@ -48,7 +48,7 @@ router.post('/add', function (req, res) {
 
   if (err) {
     res.render('add_packet', {
-      title: 'Add Article',
+      title: 'Voeg uw pakket toe',
       errors: err,
     });
   } else {
@@ -81,7 +81,7 @@ router.get('/:id', function (req, res) {
 router.get('/edit/:id', function (req, res) {
   Packet.findById(req.params.id, function (err, p) {
     res.render('edit_packet', {
-      title: 'Edit Packet',
+      title: 'Wijzig dit pakket',
       packet: p,
     });
   });

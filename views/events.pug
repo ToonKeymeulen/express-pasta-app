@@ -11,8 +11,10 @@ block content
 
   .container
     .row
-      each packet, i in packets
+      each event, i in events
         .col-lg-4.text-center
-          h3= packet.title
-          img.img-fluid(src= 'images/' + packet.title + '.jpg' alt= packet.title width='400')
-          p.lead.text-muted= packet.description
+          h3= event.title
+          img.img-fluid(src= 'images/' + event.title + '.jpg' alt= event.title width='400')
+          p.lead.text-muted= event.description
+          p.lead.text-muted= event.date
+          p= event.title
