@@ -7,19 +7,20 @@ block content
       h1 #{title}
       p.lead.text-muted
         | Scouts Sint-Hubertus organiseert een grootschalige pasta actie! Neem een kijkje op de site en ontdek ons assortiment, bestellen kan nog tot 25 december! Afhalen kan op 5 januari, praktische info volgt.
-      
-  .container
+      br
+      h3 Aantal bestelde pakketten:
+      h1= data.order_count
+  p
+  
+  section.jumbotron.text-justify
+    .container
+      h2 Eerstkomende evenement:
+      p= data.event.description
+      p.text-muted= data.event.due_back_formatted
+         
+  p
+
   .row.row-cols-2
-    .col 
-      h3 Totaal aantal bestellingen op dit moment
-      p= data.order_count
-    .col 
-      ul.list-group
-        li.list-group-item
-          h3 Eerstkomende evenement
-          h4= data.event.title
-          p= data.event.description
-          p.text-muted= data.event.due_back_formatted
     .col 
       div.facebookContainer
         h3 Neem een kijkje op onze facebook pagina!
