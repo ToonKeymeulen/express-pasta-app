@@ -4,7 +4,6 @@ const router = express.Router();
 
 // Bring in Model
 const Packet = require('../models/packet');
-const Order = require('../models/order');
 
 // Main Route
 router.get('/', function (req, res) {
@@ -19,6 +18,7 @@ router.get('/', function (req, res) {
     }
   });
 });
+
 
 // Add Route
 router.get('/add', function (req, res) {

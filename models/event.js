@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+const { DateTime } = require("luxon");
+
 // Event Schema
 const eventSchema = mongoose.Schema({
   title: {
@@ -15,5 +17,11 @@ const eventSchema = mongoose.Schema({
     required: true,
   },
 });
+
+eventSchema
+.virtual('due_back_formatted')
+.get(function () {
+  return DateTime.fromJSDate(this.date).toLocaleString(DateTime.DATE_MED);
+})
 
 module.exports = mongoose.model('Event', eventSchema);
