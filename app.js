@@ -34,6 +34,7 @@ const app = express();
 // Bring in Models
 const Packet = require('./models/packet');
 const Event = require('./models/event');
+const Order = require('./models/order');
 
 // Load view engine
 app.set('views', path.join(__dirname, 'views'));
@@ -85,7 +86,11 @@ app.use(
   })
 );
 
+// eslint-disable-next-line camelcase
+const event_controller = require('./controllers/eventController');
+
 // Home route
+
 app.get('/', function (req, res) {
   Event.findOne({ title: 'Online Kerstspel' }, function (err, ev) {
     if (err) {
@@ -105,10 +110,12 @@ app.get('/about', function (req, res) {
 
 // Route Files
 const packets = require('./routes/packets');
+
 const events = require('./routes/events');
 
 app.use('/packets', packets);
 app.use('/events', events);
+
 
 // Start server
 app.listen(port, function () {
