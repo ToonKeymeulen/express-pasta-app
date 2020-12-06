@@ -17,7 +17,7 @@ const packetSchema = mongoose.Schema({
   image_link: {
     type: String,
     required: true,
-  }
+  },
 });
 
 module.exports = mongoose.model('Packet', packetSchema);
