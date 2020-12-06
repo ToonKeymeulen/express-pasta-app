@@ -92,7 +92,6 @@ const event_controller = require('./controllers/eventController');
 // Home route
 app.get('/', event_controller.index);
 
-
 // About route
 app.get('/about', function (req, res) {
   res.render('about');
@@ -108,7 +107,6 @@ app.use('/packets', packets);
 app.use('/events', events);
 app.use('/packets_order', packets_order);
 app.use('/order', order);
-
 
 // Start server
 app.listen(port, function () {

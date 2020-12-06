@@ -1,31 +1,28 @@
 const async = require('async');
 
-
 const Event = require('../models/event');
 const Order = require('../models/order');
 
-//render the index page with one upcoming event
-exports.index = function (req, res ) {
-
-  async.parallel( {
-    order_count(callback) {
-      Order.countDocuments({}, callback);
+// Render the index page with one upcoming event
+exports.index = function (req, res) {
+  async.parallel(
+    {
+      order_count(callback) {
+        Order.countDocuments({}, callback);
+      },
+      event(callback) {
+        Event.findOne({ title: 'Online Kerstspel' }, callback);
+      },
     },
-    event(callback) {
-      Event.findOne({title: 'Online Kerstspel'}, callback);
+    function (err, results) {
+      res.render('index', {
+        title: 'Pasta-actie van scouts Hubertus',
+        error: err,
+        data: results,
+      });
     }
-  }, function(err, results) {
-    res.render('index', {
-      title: 'Pasta-actie van scouts Hubertus',
-      error: err,
-      data: results
-    });
-  });
+  );
 };
-
-
-
-  
 
 /*  Event.findOne({ title: 'Online Kerstspel' }, function (err, ev) {
     if (err) {
@@ -39,7 +36,7 @@ exports.index = function (req, res ) {
   });
   };
 */
- /* async.parallel({
+/* async.parallel({
     book_count: function(callback) {
         Book.countDocuments({}, callback); // Pass an empty object as match condition to find all documents of this collection
     },
@@ -60,25 +57,25 @@ exports.index = function (req, res ) {
 });
 */
 // render the event page with all the events
-  exports.evenementen = function (req, res) {
-    Event.find({}, function (err, evs) {
-      if (err) {
-        console.log(err);
-      } else {
-        res.render('events', {
-          title: 'Events',
-          events: evs,
-        });
-      }
-    });
-  };
-
-  // render event page for one event
-
-  exports.render_one = function (req, res) {
-    Event.findById(req.params.id, function (err, p) {
-      res.render('event', {
-        event: p,
+exports.evenementen = function (req, res) {
+  Event.find({}, function (err, evs) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.render('events', {
+        title: 'Events',
+        events: evs,
       });
+    }
+  });
+};
+
+// render event page for one event
+
+exports.render_one = function (req, res) {
+  Event.findById(req.params.id, function (err, p) {
+    res.render('event', {
+      event: p,
     });
-  };
+  });
+};

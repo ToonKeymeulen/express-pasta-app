@@ -7,7 +7,6 @@ const Event = require('../models/event');
 // eslint-disable-next-line camelcase
 const event_controller = require('../controllers/eventController');
 
-
 // Main Route
 router.get('/', event_controller.evenementen);
 
@@ -23,8 +22,6 @@ router.get('/edit/:id', function (req, res) {
     });
   });
 });
-
-
 
 // Update Submit POST route(only used during development)
 router.post('/edit/:id', function (req, res) {

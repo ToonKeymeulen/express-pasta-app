@@ -12,8 +12,7 @@ const Packet = require('../models/packet');
 // Main Route
 router.get('/', packetcontroller.display_packets);
 
-
-// Add Route 
+// Add Route
 router.get('/add', packetcontroller.add_packet);
 
 // Load order From
@@ -32,10 +31,5 @@ router.get('/edit/:id', packetcontroller.load_edit);
 router.post('/edit/:id', packetcontroller.update_post);
 // Delete Packet
 router.delete('/:id', packetcontroller.delete_packet);
-
-
-
-
-
 
 module.exports = router;

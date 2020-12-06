@@ -20,10 +20,9 @@ const orderSchema = mongoose.Schema({
   },
   packet: {
     type: mongoose.Schema.Types.ObjectId,
-     ref: 'Packet', 
-     required: true,
-  }
-
+    ref: 'Packet',
+    required: true,
+  },
 });
 
 module.exports = mongoose.model('Order', orderSchema);
