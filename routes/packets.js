@@ -2,123 +2,36 @@ const express = require('express');
 
 const router = express.Router();
 
+//Bring in controller
+const packetcontroller = require('../controllers/packetController');
+const packet = require('../models/packet');
+
 // Bring in Model
 const Packet = require('../models/packet');
-const Order = require('../models/order');
 
 // Main Route
-router.get('/', function (req, res) {
-  Packet.find({}, function (err, packs) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.render('packets', {
-        title: 'Packets',
-        packets: packs,
-      });
-    }
-  });
-});
+router.get('/', packetcontroller.display_packets);
 
-// Add Route
-router.get('/add', function (req, res) {
-  res.render('add_packet', {
-    title: 'Voeg uw pakket toe',
-  });
-});
+
+// Add Route 
+router.get('/add', packetcontroller.add_packet);
 
 // Load order From
-router.get('/order/:id', function (req, res) {
-  Packet.findById(req.params.id, function (err, p) {
-    res.render('order_packet', {
-      title: 'Order Packet',
-      packet: p,
-    });
-  });
-});
+router.get('/order/:id', packetcontroller.load_order);
 
 // Add Submit POST route
-router.post('/add', function (req, res) {
-  req.checkBody('title', 'Title is required').notEmpty();
-  req.checkBody('price', 'Price is required').notEmpty();
-  req.checkBody('description', 'Description is required').notEmpty();
-
-  // Get errors
-  const err = req.validationErrors();
-
-  if (err) {
-    res.render('add_packet', {
-      title: 'Voeg uw pakket toe',
-      errors: err,
-    });
-  } else {
-    const packet = new Packet();
-    packet.title = req.body.title;
-    packet.price = req.body.price;
-    packet.description = req.body.description;
-
-    packet.save(function (err) {
-      if (err) {
-        console.log(err);
-      } else {
-        req.flash('success', 'Packet Added');
-        res.redirect('/');
-      }
-    });
-  }
-});
+router.post('/add', packetcontroller.add_packet_post);
 
 // Get Single Packet
-router.get('/:id', function (req, res) {
-  Packet.findById(req.params.id, function (err, p) {
-    res.render('packet', {
-      packet: p,
-    });
-  });
-});
+router.get('/:id', packetcontroller.display_spec_packet);
 
 // Load Edit Form
-router.get('/edit/:id', function (req, res) {
-  Packet.findById(req.params.id, function (err, p) {
-    res.render('edit_packet', {
-      title: 'Wijzig dit pakket',
-      packet: p,
-    });
-  });
-});
+router.get('/edit/:id', packetcontroller.load_edit);
 
 // Update Submit POST route
-router.post('/edit/:id', function (req, res) {
-  const packet = {};
-  packet.title = req.body.title;
-  packet.price = req.body.price;
-  packet.description = req.body.description;
-
-
-  const query = { _id: req.params.id };
-
-  Packet.updateOne(query, packet, function (err) {
-    if (err) {
-      console.log(err);
-    } else {
-      req.flash('success', 'Packet Updated');
-      res.redirect('/');
-    }
-  });
-});
-
+router.post('/edit/:id', packetcontroller.update_post);
 // Delete Packet
-router.delete('/:id', function (req, res) {
-  const query = { _id: req.params.id };
-
-  Packet.deleteOne(query, function (err) {
-    if (err) {
-      console.log(err);
-    }
-    res.send('Success');
-  });
-});
-
+router.delete('/:id', packetcontroller.delete_packet);
 
 
 

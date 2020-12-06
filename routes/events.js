@@ -4,31 +4,17 @@ const router = express.Router();
 
 // Bring in Model
 const Event = require('../models/event');
+// eslint-disable-next-line camelcase
+const event_controller = require('../controllers/eventController');
+
 
 // Main Route
-router.get('/', function (req, res) {
-  Event.find({}, function (err, evs) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.render('events', {
-        title: 'Events',
-        events: evs,
-      });
-    }
-  });
-});
+router.get('/', event_controller.evenementen);
 
 // Get Single Event
-router.get('/:id', function (req, res) {
-  Event.findById(req.params.id, function (err, p) {
-    res.render('event', {
-      event: p,
-    });
-  });
-});
+router.get('/:id', event_controller.render_one);
 
-// Load Edit Form
+// Load Edit Form(only used during development)
 router.get('/edit/:id', function (req, res) {
   Event.findById(req.params.id, function (err, p) {
     res.render('edit_event', {
@@ -38,7 +24,9 @@ router.get('/edit/:id', function (req, res) {
   });
 });
 
-// Update Submit POST route
+
+
+// Update Submit POST route(only used during development)
 router.post('/edit/:id', function (req, res) {
   const event = {};
   event.title = req.body.title;
@@ -57,7 +45,7 @@ router.post('/edit/:id', function (req, res) {
   });
 });
 
-// Delete Event
+// Delete Event (only used during development)
 router.delete('/:id', function (req, res) {
   const query = { _id: req.params.id };
 
