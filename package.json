@@ -1,6 +1,9 @@
 {
   "name": "express-pasta-app",
   "version": "0.0.0",
+  "engines": {
+    "node": "14.15.0"
+  },
   "private": true,
   "scripts": {
     "start": "node app.js",
@@ -10,6 +13,7 @@
     "async": "^3.2.0",
     "body-parser": "^1.19.0",
     "bootstrap": "^4.5.3",
+    "compression": "^1.7.4",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.5",
     "debug": "^2.6.9",
@@ -17,6 +21,7 @@
     "express-messages": "^1.0.1",
     "express-session": "^1.17.1",
     "express-validator": "^4.3.0",
+    "helmet": "^4.2.0",
     "http-errors": "^1.6.3",
     "luxon": "^1.25.0",
     "mongoose": "^5.11.2",

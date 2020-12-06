@@ -5,13 +5,19 @@ const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
 const flash = require('connect-flash');
 const session = require('express-session');
+const compression = require('compression');
+const helmet = require('helmet');
+
+
 
 // Set port number
 const port = 3000;
 
 // Set mongodb link
-const mongoDB =
-  'mongodb+srv://emile:pasta123@pastapacket.pz52b.mongodb.net/PastaPacket?retryWrites=true&w=majority';
+
+
+const dev_db_url = 'mongodb+srv://emile:pasta123@pastapacket.pz52b.mongodb.net/PastaPacket?retryWrites=true&w=majority'
+const mongoDB = process.env.MONGODB_URI || dev_db_url;
 
 // Load database
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -30,6 +36,9 @@ db.on('error', function (err) {
 
 // Init app
 const app = express();
+
+app.use(compression());
+app.use(helmet());
 
 // Bring in Models
 const Packet = require('./models/packet');
