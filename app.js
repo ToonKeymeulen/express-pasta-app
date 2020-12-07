@@ -10,6 +10,7 @@ const helmet = require('helmet');
 
 
 
+
 // Set port number
 const port = 3000;
 
@@ -38,7 +39,12 @@ db.on('error', function (err) {
 const app = express();
 
 app.use(compression());
-app.use(helmet());
+
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+  })
+);
 
 // Bring in Models
 const Packet = require('./models/packet');
